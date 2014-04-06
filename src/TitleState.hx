@@ -19,6 +19,8 @@ class TitleState extends FlxState
 	
 	private var _counter:UInt;
 	
+	private var _sprite:FlxSprite;
+	
 	override public function create()
 	{
 		super.create();
@@ -26,11 +28,13 @@ class TitleState extends FlxState
 		_counter = 0;
 		
 		var spr:FlxSprite = new FlxSprite(0, 0);
-		spr.makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
+		spr.makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);		
 		
 		this.add(spr);
 		
-		_canvas = spr.pixels;				
+		_sprite = spr;
+		
+		_canvas = spr.pixels;
 		
 	}
 	
@@ -57,6 +61,13 @@ class TitleState extends FlxState
 			_canvas.unlock();
 		
 		}
+		
+		#if flash
+		{
+			_sprite.pixels = _canvas;
+			_sprite.update();
+		}
+		#end
 		
 		_counter = ++_counter % 1;
 				
