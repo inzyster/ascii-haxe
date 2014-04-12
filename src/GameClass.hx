@@ -13,8 +13,8 @@ class GameClass extends FlxGame
 
 	public function new(GameSizeX:Int=640, GameSizeY:Int=480, ?InitialState:Class<FlxState>, Zoom:Float=1, UpdateFramerate:Int=60, DrawFramerate:Int=60, SkipSplash:Bool=false, StartFullscreen:Bool=false) 
 	{
-		var refWidth:Int = RenderConfig.CharacterWidth * RenderConfig.Columns;
-		var refHeight:Int = RenderConfig.CharacterHeight * RenderConfig.Rows;
+		var refWidth:Int = Config.charWidth * Config.columns;
+		var refHeight:Int = Config.charHeight * Config.rows;
 		
 		var stageWidth:Int = Lib.current.stage.stageWidth;
 		var stageHeight:Int = Lib.current.stage.stageHeight;		
@@ -31,9 +31,11 @@ class GameClass extends FlxGame
 			fullScreen = true;
 		}
 		#end
-*/		
+	*/
 		
-		super(Math.ceil(stageWidth / ratio), Math.ceil(stageHeight / ratio), TitleState, ratio, fps, fps, false, fullScreen);		
+		var skipSplash:Bool = true;
+		
+		super(Math.ceil(stageWidth / ratio), Math.ceil(stageHeight / ratio), TitleState, ratio, fps, fps, skipSplash, fullScreen);		
 		
 	}
 	
