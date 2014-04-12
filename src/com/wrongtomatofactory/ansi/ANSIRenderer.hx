@@ -16,6 +16,30 @@ using com.wrongtomatofactory.ansi.CGAColor;
 class ANSIRenderer
 {
 	
+	//{ Public variables
+	
+	/**
+	 * Character width in pixels
+	 */
+	public var characterWidth( get, never ) : UInt;
+	
+	/**
+	 * Character height in pixels
+	 */
+	public var characterHeight( get, never ) : UInt;
+	
+	public function get_characterWidth() : UInt
+	{
+		return _characterWidth;
+	}
+	
+	public function get_characterHeight() : UInt
+	{
+		return _characterHeight;
+	}
+	
+	// }
+	
 	//{ Private variables
 	
 	/**
@@ -110,20 +134,26 @@ class ANSIRenderer
 									characterIndex : UInt, 
 									textColor : CGAColor,
 									backgroundColor : CGAColor,
-									targetPoint : Point,
+									characterLocation : Point,
 									targetBitmapData : BitmapData
 									)
 	{
 		var backgroundColorIndex : UInt = backgroundColor.toPaletteIndex();
 		var textColorIndex : UInt = textColor.toPaletteIndex();
+		var targetPoint : Point = this.pointForCharacterAt( characterLocation );
 		
 		targetBitmapData.copyPixels( _colorPalette, _rectangleForCharacterAtIndex( textColorIndex ), targetPoint );
 		targetBitmapData.copyPixels( _characterTextures[ backgroundColorIndex ], _rectangleForCharacterAtIndex ( characterIndex ), targetPoint, null, null, true );
 	}
 	
-	public inline function getPointForCharacterAt( characterLocation: Point ) : Point 
+	public inline function pointForCharacterAt( characterLocation : Point ) : Point 
 	{
 		return new Point( characterLocation.x * _characterWidth, characterLocation.y * _characterHeight );
+	}
+	
+	public inline function nearestPointForScreenCoordinates( coordinates : Point ) : Point 
+	{
+		return new Point( Math.ffloor( coordinates.x / _characterWidth), Math.ffloor( coordinates.y / _characterHeight ) );
 	}
 	
 	//}

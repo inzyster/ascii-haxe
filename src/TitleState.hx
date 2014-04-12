@@ -2,6 +2,7 @@ package ;
 
 import com.wrongtomatofactory.ansi.ANSIRenderer;
 import com.wrongtomatofactory.ansi.CodePage437Renderer;
+import com.wrongtomatofactory.ansi.CodePage437Character;
 import flash.display.BitmapData;
 import flash.geom.Point;
 import flash.geom.Rectangle;
@@ -22,6 +23,8 @@ class TitleState extends FlxState
 	
 	private var _canvas:BitmapData;
 	
+	private var _isDirty:Bool;
+	
 	private var _counter:UInt;
 	
 	private var _sprite:FlxSprite;
@@ -32,12 +35,10 @@ class TitleState extends FlxState
 	{
 		super.create();
 		
-		_counter = 0;
-		
 		_renderer = new CodePage437Renderer();
 		
 		var spr:FlxSprite = new FlxSprite(0, 0);
-		spr.makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);				
+		spr.makeGraphic(FlxG.width, FlxG.height, CGAColor.LightGray.toARGBValue());				
 		
 		this.add(spr);
 		
@@ -45,42 +46,43 @@ class TitleState extends FlxState
 		
 		_canvas = spr.pixels;
 		
+		_isDirty = true;
+		
+		_counter = 0;
+		
 	}
 	
 	override public function update()
 	{
 		super.update();
 		
-		if (_counter == 0)
+		if (_isDirty)
 		{
 		
-			_canvas.lock();
+			_canvas.lock();			
 			
-			for (y in 0...Config.rows)
-			{
-				for (x in 0...Config.columns)
-				{
-					var charCode:UInt = Std.random(256);
-					var colorIndex:UInt = Std.random(16);
-					var colorIndex2:UInt = Std.random(16);
-					_renderer.renderCharacter( charCode, CGAColorHelper.fromPaletteIndex(colorIndex), CGAColorHelper.fromPaletteIndex(colorIndex2), _renderer.getPointForCharacterAt( new Point( x, y ) ), _canvas );
-				}
-			}
+			_renderer.renderCP437Character( CodePage437Character.NULL, CGAColor.White, CGAColor.Black, new Point( 0, 0 ), _canvas );
+			_renderer.renderCP437Character( CodePage437Character.LATIN_CAPITAL_LETTER_A, CGAColor.White, CGAColor.BrightBlue, new Point( 1, 0 ), _canvas );
+			_renderer.renderCP437Character( CodePage437Character.COLON, CGAColor.White, CGAColor.BrightBlue, new Point( 2, 0 ), _canvas );
+			_renderer.renderCP437Character( CodePage437Character.REVERSE_SOLIDUS, CGAColor.White, CGAColor.BrightBlue, new Point( 3, 0 ), _canvas );
+			_renderer.renderCP437Character( ( _counter % 20 == 10 ? CodePage437Character.LOW_LINE : CodePage437Character.NULL ), CGAColor.White, CGAColor.BrightBlue, new Point( 4, 0 ), _canvas );
+			_renderer.renderCP437Character( CodePage437Character.NULL, CGAColor.White, CGAColor.Black, new Point( 5, 0 ), _canvas );
 			
 			_canvas.unlock();
 		
+			#if flash
+			{
+				_sprite.pixels = _canvas;
+				_sprite.update();
+			}
+			#end		
+			
 		}
 		
-		#if flash
-		{
-			_sprite.pixels = _canvas;
-			_sprite.update();
-		}
-		#end
+		_counter = ++_counter % 20;
 		
-		_counter = ++_counter % 60;
-				
+		_isDirty = _counter % 10 == 0;
+		
 	}
-	
 	
 }
