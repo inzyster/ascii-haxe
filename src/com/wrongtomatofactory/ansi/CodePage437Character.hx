@@ -2,7 +2,7 @@ package com.wrongtomatofactory.ansi ;
 
 import flash.display.BitmapData;
 
-@:bitmap("../../../assets/img/Codepage-437-no-fg.png") class CodePage437BitmapData extends BitmapData {}
+@:bitmap("assets/img/Codepage-437-no-fg.png") class CodePage437BitmapData extends BitmapData {}
 
 enum CodePage437Character
 {
