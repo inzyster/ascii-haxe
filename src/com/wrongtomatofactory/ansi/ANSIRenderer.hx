@@ -130,6 +130,14 @@ class ANSIRenderer
 	
 	//{ Public methods 
 	
+	/**
+	 * Render the specified character on the target bitmap data
+	 * @param	characterIndex		Character index on the character map
+	 * @param	textColor			Character's color
+	 * @param	backgroundColor		Background color (can be transparent)
+	 * @param	characterLocation	Location of the character (in characters, not pixels)
+	 * @param	targetBitmapData	The bitmap data to render the character on
+	 */
 	public function renderCharacter( 
 									characterIndex : UInt, 
 									textColor : CGAColor,
@@ -149,11 +157,21 @@ class ANSIRenderer
 		targetBitmapData.copyPixels( _characterTextures[ textColorIndex ], _rectangleForCharacterAtIndex ( characterIndex ), targetPoint, null, null, true );
 	}
 	
+	/**
+	 * Calculates pixel coordinates for specified character location
+	 * @param	characterLocation	The location in character units
+	 * @return	A Point object with pixel valuse
+	 */
 	public inline function pointForCharacterAt( characterLocation : Point ) : Point 
 	{
 		return new Point( characterLocation.x * _characterWidth, characterLocation.y * _characterHeight );
 	}
 	
+	/**
+	 * Calculates the nearest character location for given pixel coordinates
+	 * @param	coordinates	Screen coordinates
+	 * @return	A Point with character coordinates
+	 */
 	public inline function nearestPointForScreenCoordinates( coordinates : Point ) : Point 
 	{
 		return new Point( Math.ffloor( coordinates.x / _characterWidth), Math.ffloor( coordinates.y / _characterHeight ) );
@@ -163,6 +181,11 @@ class ANSIRenderer
 	
 	//{ Private methods
 	
+	/**
+	 * Calculates a Rectangle of pixel coordinates on the character map for the specified character index
+	 * @param	characterIndex	Character index on the character map
+	 * @return	A Rectangle with pixel coordinates and size
+	 */
 	private inline function _rectangleForCharacterAtIndex( characterIndex: UInt) : Rectangle
 	{
 		return new Rectangle( 
