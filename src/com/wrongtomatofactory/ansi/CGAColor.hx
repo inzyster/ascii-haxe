@@ -7,6 +7,7 @@ package com.wrongtomatofactory.ansi;
 
 enum CGAColor
 {	
+	Transparent;
 	Black;
 	Blue;
 	Green;
@@ -28,32 +29,33 @@ enum CGAColor
 class CGAColorHelper
 {
 
-	public static function toRGBValue( color : CGAColor ) : UInt
+	public static function toARGBValue( color : CGAColor ) : UInt
 	{
 		return switch ( color ) 
 		{
-			case Black:			0x000000;
-			case Blue:			0x0000AA;
-			case Green:			0x00AA00;
-			case Cyan:			0x00AAAA;
-			case Red:			0xAA0000;
-			case Magenta:		0xAA00AA;
-			case Brown:			0xAA5500;
-			case LightGray:		0xAAAAAA;
-			case DarkGray:		0x555555;
-			case BrightBlue:	0x5555FF;
-			case BrightGreen:	0x55FF55;
-			case BrightCyan:	0x55FFFF;
-			case BrightRed:		0xFF5555;
-			case BrightMagenta:	0xFF55FF;
-			case BrightYellow:	0xFFFF55;
-			case White:			0xFFFFFF;
+			case Transparent:	0x00000000;
+			case Black:			0xFF000000;
+			case Blue:			0xFF0000AA;
+			case Green:			0xFF00AA00;
+			case Cyan:			0xFF00AAAA;
+			case Red:			0xFFAA0000;
+			case Magenta:		0xFFAA00AA;
+			case Brown:			0xFFAA5500;
+			case LightGray:		0xFFAAAAAA;
+			case DarkGray:		0xFF555555;
+			case BrightBlue:	0xFF5555FF;
+			case BrightGreen:	0xFF55FF55;
+			case BrightCyan:	0xFF55FFFF;
+			case BrightRed:		0xFFFF5555;
+			case BrightMagenta:	0xFFFF55FF;
+			case BrightYellow:	0xFFFFFF55;
+			case White:			0xFFFFFFFF;
 		}
 	}
 	
-	public static function toARGBValue( color : CGAColor ) : UInt
+	public static function toRGBValue( color : CGAColor ) : UInt
 	{
-		return ( toRGBValue( color ) | ( 0xFF << 24 ) );
+		return ( toARGBValue( color ) >> 24 );
 	}
 	
 	public static function toPaletteIndex( color : CGAColor ) : UInt
@@ -76,6 +78,7 @@ class CGAColorHelper
 			case BrightMagenta:	0xD;
 			case BrightYellow:	0xE;
 			case White:			0xF;
+			case Transparent:	0x10;
 		}
 	}	
 	
@@ -99,7 +102,7 @@ class CGAColorHelper
 			case 0xD:	BrightMagenta;
 			case 0xE:	BrightYellow;
 			case 0xF:	White;
-			case _:		Black;
+			case _:		Transparent;
 		}
 	}
 

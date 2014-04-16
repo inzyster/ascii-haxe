@@ -67,6 +67,7 @@ class TitleState extends FlxState
 			_renderer.renderCP437Character( CodePage437Character.REVERSE_SOLIDUS, CGAColor.White, CGAColor.BrightBlue, new Point( 3, 0 ), _canvas );
 			_renderer.renderCP437Character( ( _counter % 20 == 10 ? CodePage437Character.LOW_LINE : CodePage437Character.NULL ), CGAColor.White, CGAColor.BrightBlue, new Point( 4, 0 ), _canvas );
 			_renderer.renderCP437Character( CodePage437Character.NULL, CGAColor.White, CGAColor.Black, new Point( 5, 0 ), _canvas );
+			_renderer.renderCP437Character( CodePage437Character.BOTTOM_HALF_INTEGRAL, CGAColor.Red, CGAColor.Transparent, new Point( 6, 0 ), _canvas );
 			
 			_canvas.unlock();
 		

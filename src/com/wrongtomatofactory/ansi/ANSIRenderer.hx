@@ -83,7 +83,7 @@ class ANSIRenderer
 	
 	/**
 	 * Creates a new ANSI renderer
-	 * @param	characterMapSource	The source for glyph data (can be either a BitmapData object or path to an asset containing the glyphs). The bitmap data should be transparent with a solid background and transparent glyphs.
+	 * @param	characterMapSource	The source for glyph data (can be either a BitmapData object or path to an asset containing the glyphs). The bitmap data should be solid glyphs on a transparent background.
 	 * @param	characterWidth		Character width in pixels
 	 * @param	characterHeight		Character height in pixels
 	 */
@@ -142,8 +142,11 @@ class ANSIRenderer
 		var textColorIndex : UInt = textColor.toPaletteIndex();
 		var targetPoint : Point = this.pointForCharacterAt( characterLocation );
 		
-		targetBitmapData.copyPixels( _colorPalette, _rectangleForCharacterAtIndex( textColorIndex ), targetPoint );
-		targetBitmapData.copyPixels( _characterTextures[ backgroundColorIndex ], _rectangleForCharacterAtIndex ( characterIndex ), targetPoint, null, null, true );
+		if ( textColor != CGAColor.Transparent )
+		{
+			targetBitmapData.copyPixels( _colorPalette, _rectangleForCharacterAtIndex( backgroundColorIndex ), targetPoint );
+		}
+		targetBitmapData.copyPixels( _characterTextures[ textColorIndex ], _rectangleForCharacterAtIndex ( characterIndex ), targetPoint, null, null, true );
 	}
 	
 	public inline function pointForCharacterAt( characterLocation : Point ) : Point 
