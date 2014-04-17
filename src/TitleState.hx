@@ -1,8 +1,8 @@
 package ;
 
-import com.wrongtomatofactory.ansi.ANSIRenderer;
-import com.wrongtomatofactory.ansi.CodePage437Renderer;
-import com.wrongtomatofactory.ansi.CodePage437Character;
+import com.wrongtomatofactory.ansi.backend.ANSIRenderer;
+import com.wrongtomatofactory.ansi.backend.CodePage437Renderer;
+import com.wrongtomatofactory.ansi.CodePage437Charset;
 import flash.display.BitmapData;
 import flash.geom.Point;
 import flash.geom.Rectangle;
@@ -39,7 +39,7 @@ class TitleState extends FlxState
 		
 		var spr:FlxSprite = new FlxSprite(0, 0);
 		spr.makeGraphic(FlxG.width, FlxG.height, CGAColor.LightGray.toARGBValue());				
-		
+	
 		this.add(spr);
 		
 		_sprite = spr;
@@ -61,13 +61,12 @@ class TitleState extends FlxState
 		
 			_canvas.lock();			
 			
-			_renderer.renderCP437Character( CodePage437Character.NULL, CGAColor.White, CGAColor.Black, new Point( 0, 0 ), _canvas );
-			_renderer.renderCP437Character( CodePage437Character.LATIN_CAPITAL_LETTER_A, CGAColor.White, CGAColor.BrightBlue, new Point( 1, 0 ), _canvas );
-			_renderer.renderCP437Character( CodePage437Character.COLON, CGAColor.White, CGAColor.BrightBlue, new Point( 2, 0 ), _canvas );
-			_renderer.renderCP437Character( CodePage437Character.REVERSE_SOLIDUS, CGAColor.White, CGAColor.BrightBlue, new Point( 3, 0 ), _canvas );
-			_renderer.renderCP437Character( ( _counter % 20 == 10 ? CodePage437Character.LOW_LINE : CodePage437Character.NULL ), CGAColor.White, CGAColor.BrightBlue, new Point( 4, 0 ), _canvas );
-			_renderer.renderCP437Character( CodePage437Character.NULL, CGAColor.White, CGAColor.Black, new Point( 5, 0 ), _canvas );
-			_renderer.renderCP437Character( CodePage437Character.BOTTOM_HALF_INTEGRAL, CGAColor.Red, CGAColor.Transparent, new Point( 6, 0 ), _canvas );
+			_renderer.renderCP437Character( CodePage437Charset.NULL, CGAColor.White, CGAColor.Black, new Point( 0, 0 ), _canvas );
+			_renderer.renderCP437Character( CodePage437Charset.LATIN_CAPITAL_LETTER_A, CGAColor.White, CGAColor.BrightBlue, new Point( 1, 0 ), _canvas );
+			_renderer.renderCP437Character( CodePage437Charset.COLON, CGAColor.White, CGAColor.BrightBlue, new Point( 2, 0 ), _canvas );
+			_renderer.renderCP437Character( CodePage437Charset.REVERSE_SOLIDUS, CGAColor.White, CGAColor.BrightBlue, new Point( 3, 0 ), _canvas );
+			_renderer.renderCP437Character( ( _counter % 20 == 10 ? CodePage437Charset.LOW_LINE : CodePage437Charset.NULL ), CGAColor.White, CGAColor.BrightBlue, new Point( 4, 0 ), _canvas );
+			_renderer.renderCP437Character( CodePage437Charset.NULL, CGAColor.White, CGAColor.Black, new Point( 5, 0 ), _canvas );
 			
 			_canvas.unlock();
 		

@@ -78,7 +78,7 @@ class CGAColorHelper
 			case BrightMagenta:	0xD;
 			case BrightYellow:	0xE;
 			case White:			0xF;
-			case Transparent:	0x10;
+			case Transparent:	0xFF;
 		}
 	}	
 	
