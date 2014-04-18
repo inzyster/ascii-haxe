@@ -172,7 +172,6 @@ class ANSIParser
 			
 		}
 		
-		trace( line );
 	}
 
 	private function _advanceCursor( controlSequence : String )
