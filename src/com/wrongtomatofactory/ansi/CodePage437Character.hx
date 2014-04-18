@@ -7,17 +7,17 @@ package com.wrongtomatofactory.ansi;
 class CodePage437Character
 {
 
-	public var x ( get; set; ) : Int;
+	public var x ( get, set ) : Int;
 	
-	public var y ( get; set; ) : Int;
+	public var y ( get, set ) : Int;
 	
-	public var backgroundColor ( get; set; ) : CGAColor;
+	public var backgroundColor ( get, set ) : CGAColor;
 	
-	public var foregroundColor ( get; set; ) : CGAColor;
+	public var foregroundColor ( get, set ) : CGAColor;
 	
-	public var character ( get; set; ) : CodePage437Charset;
+	public var character ( get, set ) : CodePage437Charset;
 	
-	public var isDirty ( get; null; ) : Bool;
+	public var isDirty ( get, set ) : Bool;
 			
 	private var _x : Int;
 	
@@ -36,10 +36,12 @@ class CodePage437Character
 		return _x;
 	}
 	
-	public function set_x( value : Int ) 
+	public function set_x( value : Int ) : Int
 	{
 		_x = value;
 		isDirty = true;
+		
+		return _x;
 	}
 	
 	public function get_y() : Int
@@ -47,10 +49,12 @@ class CodePage437Character
 		return _y;
 	}
 	
-	public function set_y( value : Int )
+	public function set_y( value : Int ) : Int
 	{
 		_y = value;
 		isDirty = true;
+		
+		return _y;
 	}
 	
 	public function get_backgroundColor() : CGAColor
@@ -58,10 +62,12 @@ class CodePage437Character
 		return _backgroundColor;
 	}
 	
-	public function set_backgroundColor( value : CGAColor )
+	public function set_backgroundColor( value : CGAColor ) : CGAColor
 	{
 		_backgroundColor = value;
 		isDirty = true;
+		
+		return _backgroundColor;
 	}
 	
 	public function get_foregroundColor() : CGAColor
@@ -69,21 +75,25 @@ class CodePage437Character
 		return _foregroundColor;
 	}
 	
-	public function set_foregroundColor( value : CGAColor )
+	public function set_foregroundColor( value : CGAColor ) : CGAColor
 	{
 		_foregroundColor = value;
 		isDirty = true;
+		
+		return _foregroundColor;
 	}
 	
-	public function get_character() : CodePage437Character
+	public function get_character() : CodePage437Charset
 	{
 		return _character;
 	}
 	
-	public function set_character( value : CodePage437Character )
+	public function set_character( value : CodePage437Charset ) : CodePage437Charset
 	{
 		_character = value;
 		isDirty = true;
+		
+		return _character;
 	}
 	
 	public function get_isDirty() : Bool
@@ -91,12 +101,20 @@ class CodePage437Character
 		return _isDirty;
 	}
 	
-	public function set_isDirty( value : Bool )
+	public function set_isDirty( value : Bool ) : Bool
 	{
 		_isDirty = true;
+		
+		return _isDirty;
 	}
 	
-	public function new( x : Int, y : Int, backgroundColor : CGAColor, foregroundColor : CGAColor, character : CodePage437Charset ) 
+	public function new( 
+						x : Int,
+						y : Int, 
+						backgroundColor : CGAColor, 
+						foregroundColor : CGAColor, 
+						character : CodePage437Charset 
+						) 
 	{
 		_x = x;
 		_y = y;

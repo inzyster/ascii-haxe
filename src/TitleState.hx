@@ -2,6 +2,7 @@ package ;
 
 import com.wrongtomatofactory.ansi.backend.ANSIRenderer;
 import com.wrongtomatofactory.ansi.backend.CodePage437Renderer;
+import com.wrongtomatofactory.ansi.CodePage437Character;
 import com.wrongtomatofactory.ansi.CodePage437Charset;
 import flash.display.BitmapData;
 import flash.geom.Point;
@@ -11,6 +12,7 @@ import flixel.FlxSprite;
 import flixel.FlxState;
 import flixel.util.FlxColor;
 import com.wrongtomatofactory.ansi.CGAColor;
+import com.wrongtomatofactory.ansi.io.ANSIParser;
 
 using com.wrongtomatofactory.ansi.CGAColor;
 
@@ -31,14 +33,19 @@ class TitleState extends FlxState
 	
 	private var _renderer:CodePage437Renderer;
 	
+	private var _parser:ANSIParser;
+	
 	override public function create()
 	{
 		super.create();
 		
 		_renderer = new CodePage437Renderer();
+
+		_parser = new ANSIParser();
+		_parser.parse( "ans/stuff.ans" );	
 		
 		var spr:FlxSprite = new FlxSprite(0, 0);
-		spr.makeGraphic(FlxG.width, FlxG.height, CGAColor.LightGray.toARGBValue());				
+		spr.makeGraphic(FlxG.width, FlxG.height, _parser.defaultBackgroundColor.toARGBValue());				
 	
 		this.add(spr);
 		
@@ -47,9 +54,7 @@ class TitleState extends FlxState
 		_canvas = spr.pixels;
 		
 		_isDirty = true;
-		
-		_counter = 0;
-		
+				
 	}
 	
 	override public function update()
@@ -60,13 +65,16 @@ class TitleState extends FlxState
 		{
 		
 			_canvas.lock();			
-			
-			_renderer.renderCP437Character( CodePage437Charset.NULL, CGAColor.White, CGAColor.Black, new Point( 0, 0 ), _canvas );
-			_renderer.renderCP437Character( CodePage437Charset.LATIN_CAPITAL_LETTER_A, CGAColor.White, CGAColor.BrightBlue, new Point( 1, 0 ), _canvas );
-			_renderer.renderCP437Character( CodePage437Charset.COLON, CGAColor.White, CGAColor.BrightBlue, new Point( 2, 0 ), _canvas );
-			_renderer.renderCP437Character( CodePage437Charset.REVERSE_SOLIDUS, CGAColor.White, CGAColor.BrightBlue, new Point( 3, 0 ), _canvas );
-			_renderer.renderCP437Character( ( _counter % 20 == 10 ? CodePage437Charset.LOW_LINE : CodePage437Charset.NULL ), CGAColor.White, CGAColor.BrightBlue, new Point( 4, 0 ), _canvas );
-			_renderer.renderCP437Character( CodePage437Charset.NULL, CGAColor.White, CGAColor.Black, new Point( 5, 0 ), _canvas );
+
+			for ( i in 0..._parser.characters.length )
+			{
+				var currentCharacter : CodePage437Character = _parser.characters[i];
+				if ( currentCharacter.x < 80 && currentCharacter.y < 25 && currentCharacter.isDirty )
+				{
+					currentCharacter.isDirty = false;
+					_renderer.renderCP437CharacterObject( currentCharacter, _canvas );
+				}
+			}
 			
 			_canvas.unlock();
 		

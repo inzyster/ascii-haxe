@@ -106,6 +106,30 @@ class CGAColorHelper
 		}
 	}
 
+	public static function fromANSIIndex( index: UInt ) : CGAColor
+	{
+		return switch ( index )
+		{
+			case 0x0: 	Black;
+			case 0x1:	Red;
+			case 0x2:	Green;
+			case 0x3:	Brown;
+			case 0x4:	Blue;
+			case 0x5:	Magenta;
+			case 0x6:	Cyan;
+			case 0x7:	LightGray;
+			case 0x8:	DarkGray;
+			case 0x9:	BrightRed;
+			case 0xA:	BrightGreen;
+			case 0xB:	BrightYellow;
+			case 0xC:	BrightBlue;
+			case 0xD:	BrightMagenta;
+			case 0xE:	BrightCyan;
+			case 0xF:	White;
+			case _:		Transparent;
+		}
+	}
+	
 	public static function colorsCount() : UInt
 	{
 		return 16;
