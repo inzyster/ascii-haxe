@@ -3,6 +3,8 @@ package com.wrongtomatofactory.ansi.io;
 import com.wrongtomatofactory.ansi.CGAColor;
 import com.wrongtomatofactory.ansi.CodePage437Character;
 import flash.utils.ByteArray;
+import flash.events.EventDispatcher;
+import flash.events.Event;
 import openfl.Assets;
 import com.wrongtomatofactory.ansi.CodePage437Charset;
 
@@ -10,7 +12,7 @@ import com.wrongtomatofactory.ansi.CodePage437Charset;
  * ...
  * @author Wrong Tomato Factory
  */
-class ANSIParser
+class ANSIParser extends EventDispatcher
 {
 
 	
@@ -32,6 +34,7 @@ class ANSIParser
 	
 	private var _characters : Array< CodePage437Character >;
 	
+	private var _transparentColor : CGAColor;
 	
 	private var _defaultBackgroundColor : CGAColor;
 	private var _defaultForegroundColor : CGAColor;
@@ -67,11 +70,18 @@ class ANSIParser
 	
 	public function new()
 	{
+		super();
 		this.clear();
 	}
 	
-	public function parse( fileName : String ) : Bool
+	public function parse( fileName : String, ?transparentColor : CGAColor ) : Bool
 	{
+		if ( transparentColor == null )
+		{
+			transparentColor = CGAColor.Transparent;
+		}
+		_transparentColor = transparentColor;
+		
 		var fileData = Assets.getText( fileName );
 		
 		var lines : Array< String > = fileData.split( this.newLineSeparator );
@@ -90,12 +100,15 @@ class ANSIParser
 			_currentColumn = 0;
 		}
 		_height = _currentRow - 1;
+
+		dispatchEvent( new ANSIParserCompleteEvent( this ) );
 		
 		return true;
 	}
 	
 	public function clear()
 	{
+		_transparentColor = CGAColor.Transparent;
 		_characters = new Array< CodePage437Character >();
 		_defaultBackgroundColor = CGAColor.Transparent;
 		_width = 0;
@@ -159,10 +172,11 @@ class ANSIParser
 			
 			if ( !isControlSequence )
 			{
+				var bgColor : CGAColor = ( _currentBackgroundColor == _transparentColor ? CGAColor.Transparent : _currentBackgroundColor );
 				_characters.push( new CodePage437Character( 
 															_currentColumn, 
 															_currentRow, 
-															_currentBackgroundColor, 
+															bgColor, 
 															_currentForegroundColor, 
 															CodePage437CharsetHelper.fromCharacterIndex( currentCode )
 															));
@@ -231,4 +245,26 @@ class ANSIParser
 			}
 		}
 	}
+}
+
+class ANSIParserCompleteEvent extends Event
+{
+	
+	public static inline var ANSI_PARSE_COMPLETE : String = "ANSI_PARSE_COMPLETE";
+	
+	public var parser ( get, never ) : ANSIParser;
+	
+	public function get_parser() : ANSIParser
+	{
+		return _parser;
+	}
+	
+	private var _parser : ANSIParser;
+	
+	public function new ( parser : ANSIParser, bubbles : Bool = false, cancelable : Bool = false )
+	{
+		super( ANSI_PARSE_COMPLETE, bubbles, cancelable );
+		_parser = parser;
+	}
+	
 }

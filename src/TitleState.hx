@@ -2,6 +2,7 @@ package ;
 
 import com.wrongtomatofactory.ansi.backend.ANSIRenderer;
 import com.wrongtomatofactory.ansi.backend.CodePage437Renderer;
+import com.wrongtomatofactory.ansi.backend.CP437_9x16_Renderer;
 import com.wrongtomatofactory.ansi.CodePage437Character;
 import com.wrongtomatofactory.ansi.CodePage437Charset;
 import flash.display.BitmapData;
@@ -39,7 +40,7 @@ class TitleState extends FlxState
 	{
 		super.create();
 		
-		_renderer = new CodePage437Renderer();
+		_renderer = new CP437_9x16_Renderer();
 
 		_parser = new ANSIParser();
 		_parser.parse( "ans/stuff.ans" );	
@@ -72,6 +73,7 @@ class TitleState extends FlxState
 				if ( currentCharacter.x < 80 && currentCharacter.y < 25 && currentCharacter.isDirty )
 				{
 					currentCharacter.isDirty = false;
+					_isDirty = true;
 					_renderer.renderCP437CharacterObject( currentCharacter, _canvas );
 				}
 			}
@@ -80,8 +82,11 @@ class TitleState extends FlxState
 		
 			#if flash
 			{
-				_sprite.pixels = _canvas;
-				_sprite.update();
+				if (_isDirty)
+				{
+					_sprite.pixels = _canvas;
+					_sprite.update();
+				}
 			}
 			#end		
 			
@@ -89,7 +94,8 @@ class TitleState extends FlxState
 		
 		_counter = ++_counter % 20;
 		
-		_isDirty = _counter % 10 == 0;
+		//_isDirty = _counter % 10 == 0;
+		_isDirty = false;
 		
 	}
 	

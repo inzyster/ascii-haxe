@@ -14,21 +14,14 @@ using com.wrongtomatofactory.ansi.CodePage437Charset;
  
 class CodePage437Renderer extends ANSIRenderer
 {
-
-	public function new() 
-	{
-		var characterMapSource : BitmapData = new CodePage437BitmapData( 288, 128, true );
-		
-		super( characterMapSource, 9, 16 );		
-	}
 	
-	public function renderCP437CharacterObject( character : CodePage437Character, targetBitmapData : BitmapData )
+	public function renderCP437CharacterObject( character : CodePage437Character, targetBitmapData : BitmapData, ?xOffset : Int = 0, ?yOffset : Int = 0 )
 	{
 		this.renderCP437Character( 
 									character.character, 
 									character.foregroundColor, 
 									character.backgroundColor, 
-									new Point( character.x, character.y ), 
+									new Point( character.x - xOffset, character.y - yOffset ), 
 									targetBitmapData 
 								);
 	}
